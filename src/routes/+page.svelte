@@ -1,4 +1,5 @@
 <script>
+  import { base } from '$app/paths';
   import { t } from '$lib/translations';
   import Header from '../components/Header.svelte';
   import OptionsMenu from '../components/OptionsMenu.svelte';
@@ -39,10 +40,10 @@
 <OptionsMenu
   visible={menuVisible}
   items={[{
-    href: '/about',
+    href: `${base}/about`,
     text: $t('common.about'),
   }, {
-    href: '/settings',
+    href: `${base}/settings`,
     text: $t('common.settings'),
   }, {
     href: 'https://www.cloudfone.com/dev-privacy',

@@ -8,8 +8,6 @@
 
   let menuVisible = $state(false);
 
-  console.log($locales);
-
   function onSoftKeyClick(position) {
     if (position === 'end') {
       history.back();
