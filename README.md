@@ -4,11 +4,65 @@
 
 [https://cloudmosa.github.io/cloudphone-svelte-sample/](https://cloudmosa.github.io/cloudphone-svelte-sample/)
 
+<p align="center">
+  <img alt="Home Screenshot" src="./screenshots/img_20241231_225936306.png" width="240" />
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="Menu Screenshot" src="./screenshots/img_20241231_225940700.png" width="240" />
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="About Screenshot" src="./screenshots/img_20241231_230629800.png" width="240" />
+</p>
+
+<p align="center">
+  <img alt="Settings Screenshot" src="./screenshots/img_20241231_230533877.png" width="240" />
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="Language Screenshot" src="./screenshots/img_20241231_230545463.png" width="240" />
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="Privacy Screenshot" src="./screenshots/img_20241224_194409954.png" width="240" />
+</p>
+
 ## Prerequisites
 
 * [Node & npm](https://nodejs.org/en/download/)
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * A [GitHub](https://github.com/signup) account :octocat:
+
+## Pages
+
+### `src/routes/+page.svelte`
+
+The default page that uses an OptionsMenu for navigating to About, Settings, or Privacy (external).
+
+### `src/routes/about/+page.svelte`
+
+A simple page displaying a static description.
+
+### `src/routes/settings/+page.svelte`
+
+A page for configuring the application. By default, the application will detect the best candidate from the browser's language. Users can override this on the settings page.
+
+## Components
+
+### `<Header />`
+
+A header displayed at the top of the screen. Includes a fixed logo and a `title` property that updates both `document.title` and an `h1` tag displaying the title on screen.
+
+### `<OptionsMenu />`
+
+A modal containing a list of menu items. Supports T9 keyboard navigation. Focus is moved using `ArrowUp` and `ArrowDown`. Menu items are selected using `Enter`.
+
+### `<SoftKeyBar />`
+
+An on-screen menu bar with three actions in the positions `start` (left), `center`, and `end` (right). Supports both icon and text actions triggered via a global `keydown` event listener.
+
+On Cloud Phone, soft keys are mapped as follows:
+
+| Name                  | Key           | Function          |
+| --------------------- | ------------- | ----------------- |
+| Left Soft Key (LSK)   | `Escape`      | Programmable      |
+| Right Soft Key (RSK)  | N/A           | `history.back()`  |
+| Enter                 | `Enter`       | Programmable      |
+
+Because developers cannot override the RSK behavior, clicking RSK also calls `history.back()` to reproduce the same behavior on desktop browsers.
 
 ## Deploy to GitHub Pages
 
