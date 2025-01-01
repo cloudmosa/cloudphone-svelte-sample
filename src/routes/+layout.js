@@ -19,7 +19,6 @@ export const load = async () => {
   // Otherwise try to match the browser language, if available
   const userLanguage = locale.get();
   const initialLocale = (userLanguage) ? userLanguage : getDefaultLanguage(new Set(locales.get()));
-  console.log('Locale', userLanguage, navigator.language, initialLocale);
 
   await loadTranslations(initialLocale);
 
