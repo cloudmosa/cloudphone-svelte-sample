@@ -1,7 +1,7 @@
 <script>
   import { autoFocusFirstFocusable } from "$lib/utils";
 
-  const { items = [], visible = false } = $props();
+  const { items = [], visible = false, onMenuItemSelected = () => { } } = $props();
   let focusedIndex = $state(0);
   let menu;
 
@@ -16,9 +16,14 @@
         focusedIndex = (focusedIndex - 1 + items.length) % items.length;
         break;
       case 'Enter':
-        e.preventDefault();
-
-        // TODO
+        // Only handle clicks for non-routed links
+        const href = e.target.getAttribute('href');
+        if ((href || '').startsWith('#')) {
+          e.preventDefault();
+          onMenuItemSelected(items[focusedIndex]);
+        } else {
+          e.target.click();
+        }
         break;
     }
 
@@ -35,7 +40,7 @@
   hidden={!visible}
   aria-hidden={!visible}>
   {#each items as item, index}
-    <a {...item} class:focused={index === focusedIndex}>
+    <a {...item} class:focused={index === focusedIndex} >
       {item.text}
     </a>
   {/each}

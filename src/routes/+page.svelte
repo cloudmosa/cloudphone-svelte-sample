@@ -18,9 +18,18 @@
         break;
     }
   }
+
+  function onKeyDown(e) {
+    if (e.key === 'Backspace') {
+      e.preventDefault();
+      menuVisible = false;
+    }
+  }
 </script>
 
 <Header title={$t('common.cloudphone')} />
+
+<svelte:window onkeydown={onKeyDown} />
 
 <section id="app">
   <h1>{$t('common.sveltedemo')}</h1>
@@ -36,7 +45,7 @@
     href: '/settings',
     text: $t('common.settings'),
   }, {
-    href: 'ttps://www.cloudfone.com/dev-privacy',
+    href: 'https://www.cloudfone.com/dev-privacy',
     target: '_self',
     text: $t('common.privacy')
   }]} />

@@ -15,12 +15,17 @@ export const ssr = false;
 
 /** @type {import('@sveltejs/kit').Load} */
 export const load = async () => {
-  // Default to the user-selected locale, if set
-  // Otherwise try to match the browser language, if available
-  const userLanguage = locale.get();
-  const initialLocale = (userLanguage) ? userLanguage : getDefaultLanguage(new Set(locales.get()));
+  // Load the saved language from localStorage
+  const savedLanguage = localStorage.getItem('lang');
+  if (savedLanguage) {
+    await loadTranslations(savedLanguage);
+  } else {
+    // Default to the user-selected locale, if set
+    // Otherwise try to match the browser language, if available
+    const userLanguage = locale.get();
+    const initialLocale = (userLanguage) ? userLanguage : getDefaultLanguage(new Set(locales.get()));
+    await loadTranslations(initialLocale);
+  }
 
-  await loadTranslations(initialLocale);
-
-  return {};
+  return { };
 };

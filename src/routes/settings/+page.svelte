@@ -1,9 +1,14 @@
 <script>
   import { getLanguageName, t } from '$lib/translations';
-  import { locale, locales } from '$lib/translations/index';
+  import { locale, locales, setLocale } from '$lib/translations/index';
 	import { autofocus } from '$lib/utils';
   import Header from '../../components/Header.svelte';
+  import OptionsMenu from '../../components/OptionsMenu.svelte';
   import SoftKeyBar from '../../components/SoftKeyBar.svelte';
+
+  let menuVisible = $state(false);
+
+  console.log($locales);
 
   function onSoftKeyClick(position) {
     if (position === 'end') {
@@ -12,11 +17,30 @@
   }
 
   function showLanguageSelector(e) {
-    // TODO
+    if (e.key) {
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        menuVisible = false;
+      }
+
+      if (e.key !== 'Enter') return;
+    }
+    e.preventDefault();
+    menuVisible = !menuVisible;
+  }
+
+  function onMenuItemSelected(item) {
+    // Save preference in localStorage
+    localStorage.setItem('lang', item.code);
+    setLocale(item.code);
+
+    menuVisible = false;
   }
 </script>
 
 <Header title={$t('common.settings')} />
+
+<svelte:window onkeydown={showLanguageSelector} />
 
 <section id="app">
   <div>
@@ -28,10 +52,19 @@
       role="menuitem"
       onclick={showLanguageSelector}>
       <span class="title">{$t('common.language')}</span>
-      <span class="description">{getLanguageName(locale.get() || 'en', locale.get() || 'en')}</span>
+      <span class="description">{getLanguageName($locale || 'en', $locale || 'en')}</span>
     </button>
   </div>
 </section>
+
+<OptionsMenu
+  visible={menuVisible}
+  onMenuItemSelected={onMenuItemSelected}
+  items={$locales.map((code) => ({
+    href: `#${code}`,
+    code: code,
+    text: getLanguageName($locale || 'en', code),
+  }))} />
 
 <SoftKeyBar
   onSoftKeyClick={onSoftKeyClick}
@@ -74,13 +107,6 @@
     text-align: start;
   }
 
-  button[role='menuitem'].focused,
-  button[role='menuitem']:focus {
-    background-color: #1971e6;
-    outline: none;
-    border-image: conic-gradient(#1971e6 0 0) fill 0//0 100vw;
-  }
-
   button[role='menuitem'] .title,
   button[role='menuitem'] .description {
     width: 100%;
@@ -94,5 +120,12 @@
 
   button[role='menuitem'] .description {
     font-size: 10pt;
+  }
+
+  button[role='menuitem'].focused,
+  button[role='menuitem']:focus {
+    background-color: #1971e6;
+    outline: none;
+    border-image: conic-gradient(#1971e6 0 0) fill 0//0 100vw;
   }
 </style>
